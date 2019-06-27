@@ -3,6 +3,12 @@ package org.demo.batch.jms;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ThreadLocalRandom;
 
+/**
+ * JMS Simulator based on a ConcurrentLinkedQueue
+ * 
+ * @author laguerin
+ *
+ */
 public class JMS {
 
 	private static final ConcurrentLinkedQueue<String> queue = new ConcurrentLinkedQueue<>();

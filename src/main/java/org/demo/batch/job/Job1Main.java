@@ -10,7 +10,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class Job1Main {
 
-	@SuppressWarnings("resource")
+//	@SuppressWarnings("resource")
 	public static void main(String args[]) {
 		
 		

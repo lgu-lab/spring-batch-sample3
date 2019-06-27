@@ -37,9 +37,19 @@
 	<!-- JOB DEFINITION -->
 	<batch:job id="job1">
 
-		<batch:step id="step1" next="step2">
+		<batch:step id="step1" next="step1b">
 			<batch:tasklet>
 				<bean class="org.demo.batch.job.Step1" />
+			</batch:tasklet>
+		</batch:step>
+
+		<batch:step id="step1b" next="step2">
+			<batch:tasklet >
+				<!-- A chunk must have at least a 'reader' and a 'writer' ( 'processor' is optional ) -->
+				<batch:chunk 
+					reader="basicReader" 
+					writer="basicWriter"
+					commit-interval="10" /> <!-- Lot de 10 -->
 			</batch:tasklet>
 		</batch:step>
 
@@ -128,5 +138,9 @@
 	<bean id="step2Listener" class="org.demo.batch.job.Step2Listener" />
 	<bean id="taskExecutor"  class="org.springframework.core.task.SimpleAsyncTaskExecutor" />
 
-
+	<bean id="basicReader"    class="org.demo.batch.job.BasicReader" />
+	<bean id="basicWriter"    class="org.demo.batch.job.BasicWriter" />	
+<!--
+  	<bean id="basicProcessor" class="org.demo.batch.job.BasicProcessor" />
+ -->	
 </beans>			
