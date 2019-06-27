@@ -1,8 +1,7 @@
-<beans 
-	xmlns="http://www.springframework.org/schema/beans"
-	xmlns:batch="http://www.springframework.org/schema/batch" 
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:batch="http://www.springframework.org/schema/batch"
 	xmlns:context="http://www.springframework.org/schema/context"
-	
+
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="
 		http://www.springframework.org/schema/beans 
@@ -14,86 +13,91 @@
 		http://www.springframework.org/schema/context 
 		http://www.springframework.org/schema/context/spring-context-3.0.xsd
 		">
-<!-- 
-	<import resource="classpath:context-datasource.xml"/>
- -->	
+	<!-- <import resource="classpath:context-datasource.xml"/> -->
 	<context:component-scan base-package="org.demo" />
-	
-<!-- 	
-	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">  
-		<property name="dataSource" ref="dataSource"></property>  
-	</bean> 
- -->
-	
-	<!-- JobRepository and JobLauncher are configuration/setup classes -->
-	<bean id="jobRepository" class="org.springframework.batch.core.repository.support.MapJobRepositoryFactoryBean" />
 
-	<bean id="jobLauncher" 	class="org.springframework.batch.core.launch.support.SimpleJobLauncher">
+	<!-- <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate"> 
+		<property name="dataSource" ref="dataSource"></property> </bean> -->
+
+	<!-- JobRepository and JobLauncher are configuration/setup classes -->
+	<bean id="jobRepository"
+		class="org.springframework.batch.core.repository.support.MapJobRepositoryFactoryBean" />
+
+	<bean id="jobLauncher"
+		class="org.springframework.batch.core.launch.support.SimpleJobLauncher">
 		<property name="jobRepository" ref="jobRepository" />
 	</bean>
 
 	<!-- Step will need a transaction manager -->
-	<bean id="transactionManager" class="org.springframework.batch.support.transaction.ResourcelessTransactionManager" />
+	<bean id="transactionManager"
+		class="org.springframework.batch.support.transaction.ResourcelessTransactionManager" />
 
 	<!-- ======================================================== -->
-	
+
 	<!-- JOB DEFINITION -->
 	<batch:job id="job1">
-	
+
 		<batch:step id="step1" next="step2">
-			<batch:tasklet >
+			<batch:tasklet>
 				<bean class="org.demo.batch.job.Step1" />
 			</batch:tasklet>
 		</batch:step>
-		
+
 		<batch:step id="step2" next="split3">
-			<batch:tasklet >
-				<bean class="org.demo.batch.job.Step2" >
-					<property name="max"  value="6"/>
+			<batch:tasklet>
+				<bean class="org.demo.batch.job.Step2">
+					<property name="max" value="6" />
 				</bean>
 			</batch:tasklet>
-	 		<batch:listeners>
+			<batch:listeners>
 				<batch:listener ref="step2Listener" />
-			</batch:listeners>			
+			</batch:listeners>
 		</batch:step>
-		
-		<batch:split id="split3" task-executor="taskExecutor" next="step4">
+
+		<!-- <batch:split id="split3" task-executor="taskExecutor" next="step4"> 
+			<batch:flow> <batch:step id="step3a"> <batch:tasklet> <bean class="org.demo.batch.job.Step3a" 
+			/> </batch:tasklet> </batch:step> </batch:flow> <batch:flow> <batch:step 
+			id="step3b"> <batch:tasklet> <bean class="org.demo.batch.job.Step3b" /> </batch:tasklet> 
+			</batch:step> </batch:flow> </batch:split> -->
+		<batch:split id="split3" task-executor="taskExecutor"
+			next="step4">
 			<batch:flow>
-				<batch:step id="step3a">
+				<batch:step id="step3sender">
 					<batch:tasklet>
-						<bean class="org.demo.batch.job.Step3a" />
+						<bean class="org.demo.batch.job.StepSender">
+							<property name="nbMsg" value="10" />
+							<property name="wait" value="1000" />
+						</bean>
 					</batch:tasklet>
 				</batch:step>
 			</batch:flow>
 			<batch:flow>
-				<batch:step id="step3b">
+				<batch:step id="step3receiver">
 					<batch:tasklet>
-						<bean class="org.demo.batch.job.Step3b" />
+						<bean class="org.demo.batch.job.StepReceiver" >
+						</bean>
 					</batch:tasklet>
 				</batch:step>
 			</batch:flow>
 		</batch:split>
-		
-		<batch:step id="step4" >
-			<batch:tasklet >
+
+		<batch:step id="step4">
+			<batch:tasklet>
 				<bean class="org.demo.batch.job.Step4" />
 			</batch:tasklet>
 		</batch:step>
-		
-<!-- 		<batch:listeners>
-			<batch:listener ref="job1Listener" />
-		</batch:listeners>
- -->		
+
+		<!-- <batch:listeners> <batch:listener ref="job1Listener" /> </batch:listeners> -->
 	</batch:job>
 
 	<!-- JOB CLASSES -->
-	
-	<!-- Optional JobExecutionListener to perform business logic before and after the job -->
-	<!-- 
-	<bean id="job1Listener" class="org.demo.batch.job1.Job1Listener" />
-	 -->
+
+	<!-- Optional JobExecutionListener to perform business logic before and 
+		after the job -->
+	<!-- <bean id="job1Listener" class="org.demo.batch.job1.Job1Listener" /> -->
 	<bean id="step2Listener" class="org.demo.batch.job.Step2Listener" />
-	<bean id="taskExecutor" class="org.springframework.core.task.SimpleAsyncTaskExecutor" />
+	<bean id="taskExecutor"
+		class="org.springframework.core.task.SimpleAsyncTaskExecutor" />
 
 
 </beans>			
