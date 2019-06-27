@@ -1,4 +1,4 @@
-package org.demo.batch.job;
+package org.demo.batch.tools;
 
 import java.io.Serializable;
 
@@ -15,6 +15,12 @@ public class DialogStatusBean implements Serializable {
 	
 	public DialogStatusBean() {
 		super();
+	}
+
+	public synchronized void reset() {
+		this.allMessagesSent = false ;
+		this.sentCount = 0;
+		this.receivedCount = 0 ;
 	}
 
 	//------------------------------------------------------------------------------------

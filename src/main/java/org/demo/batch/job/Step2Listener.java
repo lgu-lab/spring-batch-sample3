@@ -1,19 +1,22 @@
 package org.demo.batch.job;
 
+import org.demo.batch.tools.BasicLogger;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.StepExecutionListener;
 
 public class Step2Listener implements StepExecutionListener {
 
+	private static final BasicLogger LOGGER = BasicLogger.getLogger( Step2Listener.class );
+
 	@Override
 	public void beforeStep(StepExecution stepExecution) {
-		System.out.println("beforeStep : step name = " + stepExecution.getStepName() ) ;
+		LOGGER.log("beforeStep : step name = " + stepExecution.getStepName() ) ;
 	}
 
 	@Override
 	public ExitStatus afterStep(StepExecution stepExecution) {
-		System.out.println("afterStep : step name = " + stepExecution.getStepName() ) ;
+		LOGGER.log("afterStep : step name = " + stepExecution.getStepName() ) ;
 		return null;
 	}
 

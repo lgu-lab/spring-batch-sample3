@@ -59,6 +59,7 @@
 			/> </batch:tasklet> </batch:step> </batch:flow> <batch:flow> <batch:step 
 			id="step3b"> <batch:tasklet> <bean class="org.demo.batch.job.Step3b" /> </batch:tasklet> 
 			</batch:step> </batch:flow> </batch:split> -->
+			
 		<batch:split id="split3" task-executor="taskExecutor"
 			next="step4">
 			<batch:flow>
@@ -69,6 +70,9 @@
 							<property name="wait" value="1000" />
 						</bean>
 					</batch:tasklet>
+					<batch:listeners>
+						<batch:listener ref="dialogStatusResetListener" />
+					</batch:listeners>
 				</batch:step>
 			</batch:flow>
 			<batch:flow>
@@ -81,23 +85,48 @@
 			</batch:flow>
 		</batch:split>
 
-		<batch:step id="step4">
+		<batch:step id="step4" next="split5" >
 			<batch:tasklet>
 				<bean class="org.demo.batch.job.Step4" />
 			</batch:tasklet>
 		</batch:step>
+
+		<batch:split id="split5" task-executor="taskExecutor" >
+			<batch:flow>
+				<batch:step id="step5sender">
+					<batch:tasklet>
+						<bean class="org.demo.batch.job.StepSender">
+							<property name="nbMsg" value="6" />
+							<property name="wait" value="500" />
+						</bean>
+					</batch:tasklet>
+					<batch:listeners>
+						<batch:listener ref="dialogStatusResetListener" />
+					</batch:listeners>
+				</batch:step>
+			</batch:flow>
+			<batch:flow>
+				<batch:step id="step5receiver">
+					<batch:tasklet>
+						<bean class="org.demo.batch.job.StepReceiver" >
+						</bean>
+					</batch:tasklet>
+				</batch:step>
+			</batch:flow>
+		</batch:split>
 
 		<!-- <batch:listeners> <batch:listener ref="job1Listener" /> </batch:listeners> -->
 	</batch:job>
 
 	<!-- JOB CLASSES -->
 
-	<!-- Optional JobExecutionListener to perform business logic before and 
-		after the job -->
+	<!-- Commons listeners -->
+	<bean id="dialogStatusResetListener" class="org.demo.batch.tools.DialogStatusResetListener" />
+
+	<!-- Optional JobExecutionListener to perform business logic before and after the job -->
 	<!-- <bean id="job1Listener" class="org.demo.batch.job1.Job1Listener" /> -->
 	<bean id="step2Listener" class="org.demo.batch.job.Step2Listener" />
-	<bean id="taskExecutor"
-		class="org.springframework.core.task.SimpleAsyncTaskExecutor" />
+	<bean id="taskExecutor"  class="org.springframework.core.task.SimpleAsyncTaskExecutor" />
 
 
 </beans>			
