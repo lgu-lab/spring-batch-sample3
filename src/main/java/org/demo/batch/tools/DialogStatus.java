@@ -7,6 +7,12 @@ import org.springframework.batch.item.ExecutionContext;
 
 public class DialogStatus {
 	
+	//------------------------------------------------------------------------------------
+	public static DialogStatusBean getCurrentStatus(ChunkContext chunkContext) {
+		return getDialogStatus(chunkContext);
+	}
+
+	//------------------------------------------------------------------------------------
 	public static void reset(ChunkContext chunkContext) {
 		getDialogStatus(chunkContext).reset();
 	}
@@ -17,39 +23,40 @@ public class DialogStatus {
 	//------------------------------------------------------------------------------------
 	// Sender methods
 	//------------------------------------------------------------------------------------
+	/**
+	 * Notify that a message has been sent (increment the counter)
+	 * @param chunkContext
+	 */
 	public static void messageSent(ChunkContext chunkContext) {
 		getDialogStatus(chunkContext).incrementSentCount();
 	}
-	public static long getSentCount(ChunkContext chunkContext) {
-		return getDialogStatus(chunkContext).getSentCount();
-	}
 	
-	//------------------------------------------------------------------------------------
+	/**
+	 * Notify end of sending (all messages have been sent)
+	 * @param chunkContext
+	 */
 	public static void endOfSending(ChunkContext chunkContext) {
-		getDialogStatus(chunkContext).allMessagesSent();
+		getDialogStatus(chunkContext).setAllMessagesSent();
 	}	
-	public static boolean areAllMessagesSent(ChunkContext chunkContext) {
-		return getDialogStatus(chunkContext).areAllMessagesSent();
-	}
 	
 	//------------------------------------------------------------------------------------
 	// Receiver methods
 	//------------------------------------------------------------------------------------
+	/**
+	 * Notify that a message has been sent (increment the counter)
+	 * @param chunkContext
+	 */
 	public static void messageReceived(ChunkContext chunkContext) {
 		getDialogStatus(chunkContext).incrementReceivedCount();
 	}
-	public static long getReceivedCount(ChunkContext chunkContext) {
-		return getDialogStatus(chunkContext).getReceivedCount();
-	}
 	
-	//------------------------------------------------------------------------------------
-	public static synchronized boolean dialogCompleted(ChunkContext chunkContext) {
+	/**
+	 * Returns true if the dialog is completed (the receiver has received all the expected messages)
+	 * @param chunkContext
+	 * @return
+	 */
+	public static boolean dialogCompleted(ChunkContext chunkContext) {
 		return getDialogStatus(chunkContext).dialogCompleted();
-	}
-
-	//------------------------------------------------------------------------------------
-	public static DialogStatusBean getCurrentStatus(ChunkContext chunkContext) {
-		return getDialogStatus(chunkContext);
 	}
 
 	//------------------------------------------------------------------------------------
@@ -57,17 +64,6 @@ public class DialogStatus {
 	//------------------------------------------------------------------------------------
 	private static final String DIALOG_STATUS = "DIALOG_STATUS" ;
 
-//	private synchronized static final DialogStatusBean getDialogStatus(ChunkContext chunkContext) {
-//		JobExecution jobExecution = chunkContext.getStepContext().getStepExecution().getJobExecution();
-//		ExecutionContext executionContext = jobExecution.getExecutionContext();
-//		DialogStatusBean status = (DialogStatusBean) executionContext.get(DIALOG_STATUS);
-//		if ( status == null ) {
-//			status = new DialogStatusBean() ;
-//			executionContext.put(DIALOG_STATUS, status);
-//		}
-//		return status ;
-//	}
-	
 	private synchronized static final DialogStatusBean getDialogStatus(ChunkContext chunkContext) {
 		JobExecution jobExecution = chunkContext.getStepContext().getStepExecution().getJobExecution();
 		return getDialogStatus( jobExecution );

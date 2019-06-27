@@ -13,11 +13,11 @@ public class DialogStatusBean implements Serializable {
 	// Receiver data
 	private long receivedCount = 0 ;
 	
-	public DialogStatusBean() {
+	protected DialogStatusBean() {
 		super();
 	}
 
-	public synchronized void reset() {
+	protected synchronized void reset() {
 		this.allMessagesSent = false ;
 		this.sentCount = 0;
 		this.receivedCount = 0 ;
@@ -26,7 +26,7 @@ public class DialogStatusBean implements Serializable {
 	//------------------------------------------------------------------------------------
 	// Sender methods
 	//------------------------------------------------------------------------------------
-	public synchronized void incrementSentCount() {
+	protected synchronized void incrementSentCount() {
 		this.sentCount++;
 	}
 	public long getSentCount() {
@@ -34,17 +34,17 @@ public class DialogStatusBean implements Serializable {
 	}
 	
 	//------------------------------------------------------------------------------------
-	public synchronized void allMessagesSent() {
+	protected synchronized void setAllMessagesSent() {
 		allMessagesSent = true;
 	}	
-	public boolean areAllMessagesSent() {
+	public boolean getAllMessagesSent() {
 		return allMessagesSent ;
 	}
 	
 	//------------------------------------------------------------------------------------
 	// Receiver methods
 	//------------------------------------------------------------------------------------
-	public void incrementReceivedCount() {
+	protected synchronized void incrementReceivedCount() {
 		this.receivedCount++;
 	}
 	public long getReceivedCount() {
