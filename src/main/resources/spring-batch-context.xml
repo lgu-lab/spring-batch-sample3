@@ -48,6 +48,7 @@
 				<!-- A chunk must have at least a 'reader' and a 'writer' ( 'processor' is optional ) -->
 				<batch:chunk 
 					reader="basicReader" 
+					processor="basicProcessor"
 					writer="basicWriter"
 					commit-interval="10" /> <!-- Lot de 10 -->
 			</batch:tasklet>
@@ -140,7 +141,6 @@
 
 	<bean id="basicReader"    class="org.demo.batch.job.BasicReader" />
 	<bean id="basicWriter"    class="org.demo.batch.job.BasicWriter" />	
-<!--
   	<bean id="basicProcessor" class="org.demo.batch.job.BasicProcessor" />
- -->	
+
 </beans>			

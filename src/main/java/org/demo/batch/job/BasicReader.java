@@ -1,5 +1,6 @@
 package org.demo.batch.job;
 
+import org.demo.batch.tools.BasicLogger;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.NonTransientResourceException;
 import org.springframework.batch.item.ParseException;
@@ -14,7 +15,14 @@ import org.springframework.batch.item.UnexpectedInputException;
  */
 public class BasicReader implements ItemReader<String> {
 
+	private static final BasicLogger LOGGER = BasicLogger.getLogger( BasicReader.class );
+
 	private int n = 0 ;
+	
+	public BasicReader() {
+		super();
+		LOGGER.log("ItemReader - Constructor");
+	}
 	
 	@Override
 	public String read() throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException {
