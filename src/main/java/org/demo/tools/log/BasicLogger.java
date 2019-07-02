@@ -1,4 +1,4 @@
-package org.demo.batch.tools;
+package org.demo.tools.log;
 
 public class BasicLogger {
 

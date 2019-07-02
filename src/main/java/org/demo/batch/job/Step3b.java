@@ -1,6 +1,7 @@
 package org.demo.batch.job;
 
-import org.demo.batch.tools.BasicLogger;
+import org.demo.tools.batch.util.JobUtil;
+import org.demo.tools.log.BasicLogger;
 import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.tasklet.Tasklet;
@@ -27,7 +28,7 @@ public class Step3b implements Tasklet  {
 		Thread.sleep(1000);
 		count++ ;
 		LOGGER.log("count = " + count );
-		Util.incrementCount(chunkContext);
+		JobUtil.incrementCount(chunkContext);
 		
 
 		// Return status : 

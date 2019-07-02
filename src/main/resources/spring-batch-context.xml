@@ -132,7 +132,7 @@
 	<!-- JOB CLASSES -->
 
 	<!-- Commons listeners -->
-	<bean id="dialogStatusResetListener" class="org.demo.batch.tools.DialogStatusResetListener" />
+	<bean id="dialogStatusResetListener" class="org.demo.tools.batch.jmsdialog.DialogStatusResetListener" />
 
 	<!-- Optional JobExecutionListener to perform business logic before and after the job -->
 	<!-- <bean id="job1Listener" class="org.demo.batch.job1.Job1Listener" /> -->

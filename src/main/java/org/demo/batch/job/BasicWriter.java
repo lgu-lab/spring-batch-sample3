@@ -1,8 +1,9 @@
 package org.demo.batch.job;
 
+import java.io.PrintStream;
 import java.util.List;
 
-import org.demo.batch.tools.BasicLogger;
+import org.demo.tools.log.BasicLogger;
 import org.springframework.batch.item.ItemWriter;
 
 public class BasicWriter implements ItemWriter<String> {
@@ -16,13 +17,15 @@ public class BasicWriter implements ItemWriter<String> {
 	
 	@Override
 	public void write(List<? extends String> items) throws Exception {
-		System.out.println("write chunk list : " + items.size() + " items");
+		// Write on the console
+		PrintStream out = System.out ;
+		out.println("write chunk list : " + items.size() + " items");
 		for ( String s : items ) {
-			System.out.println(" . item : " + s);
+			out.println(" . item : " + s);
 		}
 
-		System.out.println("end of write = end of chunk processing. " );
-		System.out.println("--------------------- " );
+		out.println("end of write = end of chunk processing. " );
+		out.println("--------------------- " );
 	}
 	
 

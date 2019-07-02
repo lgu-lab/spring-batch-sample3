@@ -1,4 +1,4 @@
-package org.demo.batch.jms;
+package org.demo.batch.fakejms;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ThreadLocalRandom;

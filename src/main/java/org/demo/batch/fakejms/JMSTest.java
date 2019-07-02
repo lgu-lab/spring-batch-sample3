@@ -1,4 +1,4 @@
-package org.demo.batch.jms;
+package org.demo.batch.fakejms;
 
 public class JMSTest {
 

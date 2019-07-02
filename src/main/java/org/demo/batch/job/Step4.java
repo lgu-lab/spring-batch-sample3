@@ -1,6 +1,7 @@
 package org.demo.batch.job;
 
-import org.demo.batch.tools.BasicLogger;
+import org.demo.tools.batch.util.JobUtil;
+import org.demo.tools.log.BasicLogger;
 import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.tasklet.Tasklet;
@@ -23,7 +24,7 @@ public class Step4 implements Tasklet  {
 			LOGGER.log("ChunkContext : " + chunkContext );
 		}
 		LOGGER.log("This is the end." );
-		LOGGER.log("Job context Count =  " + Util.getCount(chunkContext) );
+		LOGGER.log("Job context Count =  " + JobUtil.getCount(chunkContext) );
 
 		return RepeatStatus.FINISHED ;
 	}

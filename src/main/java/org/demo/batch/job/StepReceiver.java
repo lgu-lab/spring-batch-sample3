@@ -1,8 +1,8 @@
 package org.demo.batch.job;
 
-import org.demo.batch.jms.JMS;
-import org.demo.batch.tools.BasicLogger;
-import org.demo.batch.tools.DialogStatus;
+import org.demo.batch.fakejms.JMS;
+import org.demo.tools.batch.jmsdialog.DialogStatus;
+import org.demo.tools.log.BasicLogger;
 import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.tasklet.Tasklet;

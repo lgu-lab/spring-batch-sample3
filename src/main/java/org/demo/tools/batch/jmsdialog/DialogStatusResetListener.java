@@ -1,5 +1,6 @@
-package org.demo.batch.tools;
+package org.demo.tools.batch.jmsdialog;
 
+import org.demo.tools.log.BasicLogger;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.StepExecutionListener;

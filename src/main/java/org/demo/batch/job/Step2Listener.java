@@ -1,6 +1,6 @@
 package org.demo.batch.job;
 
-import org.demo.batch.tools.BasicLogger;
+import org.demo.tools.log.BasicLogger;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.StepExecutionListener;

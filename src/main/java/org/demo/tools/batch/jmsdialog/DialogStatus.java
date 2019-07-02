@@ -1,4 +1,4 @@
-package org.demo.batch.tools;
+package org.demo.tools.batch.jmsdialog;
 
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.StepExecution;
