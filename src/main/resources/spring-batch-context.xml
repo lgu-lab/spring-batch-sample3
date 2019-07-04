@@ -36,6 +36,10 @@
 
 	<!-- JOB DEFINITION -->
 	<batch:job id="job1">
+	
+		<batch:listeners>
+			<batch:listener ref="job1Listener" />
+		</batch:listeners>
 
 		<batch:step id="step1" next="step1b">
 			<batch:tasklet>
@@ -149,6 +153,8 @@
 	<bean id="DialogStatusResetAfterStep"  class="org.demo.tools.batch.jmsdialog.DialogStatusResetAfterStep" />
 
 	<!-- Optional JobExecutionListener to perform business logic before and after the job -->
+	<bean id="job1Listener" class="org.demo.batch.job.Job1Listener" />
+	
 	<!-- <bean id="job1Listener" class="org.demo.batch.job1.Job1Listener" /> -->
 	<bean id="step2Listener" class="org.demo.batch.job.Step2Listener" />
 	<bean id="taskExecutor"  class="org.springframework.core.task.SimpleAsyncTaskExecutor" />

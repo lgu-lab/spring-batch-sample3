@@ -2,13 +2,21 @@ package org.demo.tools.log;
 
 public class BasicLogger {
 
-	public final static BasicLogger getLogger( String name ) {
+	private static boolean LOG = false ;
+	
+	public static final void setLogStatus(boolean b) {
+		LOG = b ;
+	}
+
+	public static final BasicLogger getLogger( String name ) {
 		return new BasicLogger(name);
 	}
 	
-	public final static BasicLogger getLogger( Class<?> clazz ) {
+	public static final BasicLogger getLogger( Class<?> clazz ) {
 		return new BasicLogger(clazz.getSimpleName());
 	}
+	
+	//--------------------------------------------------------------------
 	
 	private final String name ;
 	
@@ -22,6 +30,8 @@ public class BasicLogger {
 	}
 
 	private void println(String msg) {
-		System.out.println(msg);
+		if ( LOG ) {
+			System.out.println(msg);
+		}
 	}
 }
