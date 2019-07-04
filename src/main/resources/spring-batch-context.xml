@@ -54,13 +54,14 @@
 			</batch:tasklet>
 		</batch:step>
 
-		<batch:step id="step2" next="split3">
+		<batch:step id="step2" next="split3init">
 			<batch:tasklet>
 				<bean class="org.demo.batch.job.Step2">
 					<property name="max" value="6" />
 				</bean>
 			</batch:tasklet>
 			<batch:listeners>
+				<batch:listener ref="DialogStatusResetBeforeStep" />
 				<batch:listener ref="step2Listener" />
 			</batch:listeners>
 		</batch:step>
@@ -71,8 +72,13 @@
 			id="step3b"> <batch:tasklet> <bean class="org.demo.batch.job.Step3b" /> </batch:tasklet> 
 			</batch:step> </batch:flow> </batch:split> -->
 			
-		<batch:split id="split3" task-executor="taskExecutor"
-			next="step4">
+		<batch:step id="split3init" next="split3">
+			<batch:tasklet>
+				<bean class="org.demo.tools.batch.jmsdialog.DialogStatusResetTasklet" />
+			</batch:tasklet>
+		</batch:step>
+
+		<batch:split id="split3" task-executor="taskExecutor" next="step4">
 			<batch:flow>
 				<batch:step id="step3sender">
 					<batch:tasklet>
@@ -81,24 +87,31 @@
 							<property name="wait" value="1000" />
 						</bean>
 					</batch:tasklet>
-					<batch:listeners>
-						<batch:listener ref="dialogStatusResetListener" />
-					</batch:listeners>
 				</batch:step>
 			</batch:flow>
 			<batch:flow>
 				<batch:step id="step3receiver">
 					<batch:tasklet>
-						<bean class="org.demo.batch.job.StepReceiver" >
-						</bean>
+						<bean class="org.demo.batch.job.StepReceiver" />
 					</batch:tasklet>
+					<!-- 
+					<batch:listeners>
+						<batch:listener ref="DialogStatusResetAfterStep" />
+					</batch:listeners>
+					 -->
 				</batch:step>
 			</batch:flow>
 		</batch:split>
 
-		<batch:step id="step4" next="split5" >
+		<batch:step id="step4" next="split5init" >
 			<batch:tasklet>
 				<bean class="org.demo.batch.job.Step4" />
+			</batch:tasklet>
+		</batch:step>
+
+		<batch:step id="split5init" next="split5">
+			<batch:tasklet>
+				<bean class="org.demo.tools.batch.jmsdialog.DialogStatusResetTasklet" />
 			</batch:tasklet>
 		</batch:step>
 
@@ -111,9 +124,6 @@
 							<property name="wait" value="500" />
 						</bean>
 					</batch:tasklet>
-					<batch:listeners>
-						<batch:listener ref="dialogStatusResetListener" />
-					</batch:listeners>
 				</batch:step>
 			</batch:flow>
 			<batch:flow>
@@ -122,6 +132,9 @@
 						<bean class="org.demo.batch.job.StepReceiver" >
 						</bean>
 					</batch:tasklet>
+					<batch:listeners>
+						<batch:listener ref="DialogStatusResetAfterStep" />
+					</batch:listeners>
 				</batch:step>
 			</batch:flow>
 		</batch:split>
@@ -132,7 +145,8 @@
 	<!-- JOB CLASSES -->
 
 	<!-- Commons listeners -->
-	<bean id="dialogStatusResetListener" class="org.demo.tools.batch.jmsdialog.DialogStatusResetListener" />
+	<bean id="DialogStatusResetBeforeStep" class="org.demo.tools.batch.jmsdialog.DialogStatusResetBeforeStep" />
+	<bean id="DialogStatusResetAfterStep"  class="org.demo.tools.batch.jmsdialog.DialogStatusResetAfterStep" />
 
 	<!-- Optional JobExecutionListener to perform business logic before and after the job -->
 	<!-- <bean id="job1Listener" class="org.demo.batch.job1.Job1Listener" /> -->
