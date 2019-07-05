@@ -1,4 +1,4 @@
-package org.demo.batch.job;
+package org.demo.batch.job1;
 
 import org.demo.tools.batch.util.JobUtil;
 import org.demo.tools.log.BasicLogger;
@@ -7,17 +7,24 @@ import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
 
-public class Step3a implements Tasklet  {
+public class Step2 implements Tasklet  {
 	
-	private static final BasicLogger LOGGER = BasicLogger.getLogger( Step3a.class );
-	
-	private int count = 0 ;
+	private static final BasicLogger LOGGER = BasicLogger.getLogger( Step2.class );
 
-	public Step3a() {
+	private int count = 0 ;
+	
+	private int max = 0 ;
+
+	public Step2() {
 		super();
 		LOGGER.log("Tasklet : Constructor");
 	}
 
+	public void setMax(int v) {
+		this.max = v ;
+		LOGGER.log("max set to " + v );
+	}
+	
 	@Override
 	public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
 		
@@ -25,7 +32,6 @@ public class Step3a implements Tasklet  {
 		if ( chunkContext != null ) {
 			LOGGER.log("ChunkContext : " + chunkContext );
 		}
-		Thread.sleep(500);
 		count++ ;
 		LOGGER.log("count = " + count );
 		JobUtil.incrementCount(chunkContext);
@@ -34,7 +40,7 @@ public class Step3a implements Tasklet  {
 		// Return status : 
 		// . RepeatStatus.CONTINUABLE : Indicates that processing can continue.
 		// . RepeatStatus.FINISHED    : Indicates that processing is finished (either successful or unsuccessful)	
-		if ( count < 10 ) {
+		if ( count < max ) {
 			return RepeatStatus.CONTINUABLE;
 		}
 		else {

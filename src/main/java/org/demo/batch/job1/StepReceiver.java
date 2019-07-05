@@ -1,4 +1,4 @@
-package org.demo.batch.job;
+package org.demo.batch.job1;
 
 import org.demo.batch.fakejms.JMS;
 import org.demo.tools.batch.jmsdialog.DialogStatus;

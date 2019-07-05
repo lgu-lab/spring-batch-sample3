@@ -1,4 +1,4 @@
-package org.demo.batch.job;
+package org.demo.batch.job1;
 
 import java.io.PrintStream;
 import java.util.List;

@@ -1,4 +1,4 @@
-package org.demo.batch.job;
+package org.demo.batch.job1;
 
 import org.demo.tools.batch.util.JobUtil;
 import org.demo.tools.log.BasicLogger;
@@ -7,11 +7,13 @@ import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
 
-public class Step4 implements Tasklet  {
-
-	private static final BasicLogger LOGGER = BasicLogger.getLogger( Step4.class );
+public class Step1 implements Tasklet  {
 	
-	public Step4() {
+	private static final BasicLogger LOGGER = BasicLogger.getLogger( Step1.class );
+
+	private int count = 0 ;
+
+	public Step1() {
 		super();
 		LOGGER.log("Tasklet : Constructor");
 	}
@@ -23,10 +25,20 @@ public class Step4 implements Tasklet  {
 		if ( chunkContext != null ) {
 			LOGGER.log("ChunkContext : " + chunkContext );
 		}
-		LOGGER.log("This is the end." );
-		LOGGER.log("Job context Count =  " + JobUtil.getCount(chunkContext) );
+		count++ ;
+		LOGGER.log("count = " + count );
+		JobUtil.incrementCount(chunkContext);
+		
 
-		return RepeatStatus.FINISHED ;
+		// Return status : 
+		// . RepeatStatus.CONTINUABLE : Indicates that processing can continue.
+		// . RepeatStatus.FINISHED    : Indicates that processing is finished (either successful or unsuccessful)	
+		if ( count < 10 ) {
+			return RepeatStatus.CONTINUABLE;
+		}
+		else {
+			return RepeatStatus.FINISHED ;
+		}
 	}
 
 }

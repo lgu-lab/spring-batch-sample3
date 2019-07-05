@@ -1,4 +1,4 @@
-package org.demo.batch.job;
+package org.demo.batch.job1;
 
 import org.demo.tools.batch.util.JobUtil;
 import org.demo.tools.log.BasicLogger;
@@ -7,13 +7,13 @@ import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
 
-public class Step3b implements Tasklet  {
+public class Step3a implements Tasklet  {
 	
-	private static final BasicLogger LOGGER = BasicLogger.getLogger( Step3b.class );
+	private static final BasicLogger LOGGER = BasicLogger.getLogger( Step3a.class );
 	
 	private int count = 0 ;
 
-	public Step3b() {
+	public Step3a() {
 		super();
 		LOGGER.log("Tasklet : Constructor");
 	}
@@ -25,7 +25,7 @@ public class Step3b implements Tasklet  {
 		if ( chunkContext != null ) {
 			LOGGER.log("ChunkContext : " + chunkContext );
 		}
-		Thread.sleep(1000);
+		Thread.sleep(500);
 		count++ ;
 		LOGGER.log("count = " + count );
 		JobUtil.incrementCount(chunkContext);
