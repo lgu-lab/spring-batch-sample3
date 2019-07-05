@@ -1,0 +1,95 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:batch="http://www.springframework.org/schema/batch"
+	xmlns:context="http://www.springframework.org/schema/context"
+
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		
+		http://www.springframework.org/schema/batch
+		http://www.springframework.org/schema/batch/spring-batch-3.0.xsd
+		
+		http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		">
+	<!-- <import resource="classpath:context-datasource.xml"/> -->
+	<context:component-scan base-package="org.demo" />
+
+	<!-- <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate"> 
+		<property name="dataSource" ref="dataSource"></property> </bean> -->
+
+	<!-- JobRepository and JobLauncher are configuration/setup classes -->
+	<bean id="jobRepository"
+		class="org.springframework.batch.core.repository.support.MapJobRepositoryFactoryBean" />
+
+	<bean id="jobLauncher"
+		class="org.springframework.batch.core.launch.support.SimpleJobLauncher">
+		<property name="jobRepository" ref="jobRepository" />
+	</bean>
+
+	<!-- Step will need a transaction manager -->
+	<bean id="transactionManager"
+		class="org.springframework.batch.support.transaction.ResourcelessTransactionManager" />
+
+	<!-- ======================================================== -->
+
+	<!-- JOB DEFINITION -->
+	<batch:job id="job2">
+	
+		<batch:listeners>
+			<batch:listener ref="job2Listener" />
+		</batch:listeners>
+
+		<batch:step id="step1" next="step2" >
+			<batch:tasklet>
+				<bean class="org.demo.batch.job2.Step1" />
+			</batch:tasklet>
+		</batch:step>
+
+		<batch:split id="step2" task-executor="taskExecutor" next="step3">
+			<batch:flow>
+				<batch:step id="step2sender">
+					<batch:tasklet >
+						<!-- A chunk must have at least a 'reader' and a 'writer' ( 'processor' is optional ) -->
+						<batch:chunk 
+							reader="Step2SenderReader" 
+							processor="Step2SenderProcessor"
+							writer="Step2SenderWriter"
+							commit-interval="10" /> <!-- Lot de 10 -->
+					</batch:tasklet>
+				</batch:step>
+			</batch:flow>
+			<batch:flow>
+				<batch:step id="step2receiver">
+					<batch:tasklet>
+						<bean class="org.demo.batch.job2.Step2Receiver" />
+					</batch:tasklet>
+				</batch:step>
+			</batch:flow>
+		</batch:split>
+
+		<batch:step id="step3" >
+			<batch:tasklet>
+				<bean class="org.demo.batch.job2.Step3" />
+			</batch:tasklet>
+		</batch:step>
+
+	</batch:job>
+
+	<!-- JOB CLASSES -->
+
+	<!-- Commons listeners -->
+	<bean id="DialogStatusResetBeforeStep" class="org.demo.tools.batch.jmsdialog.DialogStatusResetBeforeStep" />
+	<bean id="DialogStatusResetAfterStep"  class="org.demo.tools.batch.jmsdialog.DialogStatusResetAfterStep" />
+
+	<!-- Optional JobExecutionListener to perform business logic before and after the job -->
+	<bean id="job2Listener" class="org.demo.batch.job2.Job2Listener" />
+	
+	<bean id="taskExecutor"  class="org.springframework.core.task.SimpleAsyncTaskExecutor" />
+
+	<bean id="Step2SenderReader"    class="org.demo.batch.job2.Step2SenderReader" />
+  	<bean id="Step2SenderProcessor" class="org.demo.batch.job2.Step2SenderProcessor" />
+	<bean id="Step2SenderWriter"    class="org.demo.batch.job2.Step2SenderWriter" />	
+
+</beans>			
