@@ -34,11 +34,6 @@ public class JMS {
 	public static void waitRandomly() {
 		int randomNum = ThreadLocalRandom.current().nextInt(0, 5 + 1);
 		sleep(randomNum*1000);
-//		try {
-//			Thread.sleep(randomNum*1000);
-//		} catch (InterruptedException e) {
-//			return ;
-//		}
 	}
 
 	public static void sleep(long n) {

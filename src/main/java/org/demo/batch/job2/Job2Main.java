@@ -30,7 +30,7 @@ public class Job2Main {
 			System.out.println("Job Exit Status : "+ execution.getStatus());
 	 
 		} catch (JobExecutionException e) {
-			System.out.println("Job ExamResult failed");
+			System.out.println("Job failed");
 			e.printStackTrace();
 		}
 	}

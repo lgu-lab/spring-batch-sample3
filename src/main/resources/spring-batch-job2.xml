@@ -32,6 +32,13 @@
 	<bean id="transactionManager"
 		class="org.springframework.batch.support.transaction.ResourcelessTransactionManager" />
 
+	<bean id="taskExecutor"  class="org.springframework.core.task.SimpleAsyncTaskExecutor" />
+
+	<!-- ======================================================== -->
+	<!-- Framework listeners -->
+	<bean id="DialogStatusResetBeforeStep" class="org.demo.tools.batch.jmsdialog.DialogStatusResetBeforeStep" />
+	<bean id="DialogStatusResetAfterStep"  class="org.demo.tools.batch.jmsdialog.DialogStatusResetAfterStep" />
+
 	<!-- ======================================================== -->
 
 	<!-- JOB DEFINITION -->
@@ -79,15 +86,9 @@
 
 	<!-- JOB CLASSES -->
 
-	<!-- Commons listeners -->
-	<bean id="DialogStatusResetBeforeStep" class="org.demo.tools.batch.jmsdialog.DialogStatusResetBeforeStep" />
-	<bean id="DialogStatusResetAfterStep"  class="org.demo.tools.batch.jmsdialog.DialogStatusResetAfterStep" />
-
 	<!-- Optional JobExecutionListener to perform business logic before and after the job -->
-	<bean id="job2Listener" class="org.demo.batch.job2.Job2Listener" />
+	<bean id="job2Listener"         class="org.demo.batch.job2.Job2Listener" />
 	
-	<bean id="taskExecutor"  class="org.springframework.core.task.SimpleAsyncTaskExecutor" />
-
 	<bean id="Step2SenderReader"    class="org.demo.batch.job2.Step2SenderReader" />
   	<bean id="Step2SenderProcessor" class="org.demo.batch.job2.Step2SenderProcessor" />
 	<bean id="Step2SenderWriter"    class="org.demo.batch.job2.Step2SenderWriter" />	
